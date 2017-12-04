@@ -81,14 +81,14 @@
              M :: map()) -> map().
 
 append(K, V, M) ->
-    maps:update_with(K, fun (L) -> L ++ [V] end, M).
+    update_with(K, fun (L) -> L ++ [V] end, M).
 
 -spec append_list(K :: any(),
                   Vs :: list(),
                   M :: map()) -> map().
 
 append_list(K, Vs, M) ->
-    maps:update_with(K, fun (L) -> L ++ Vs end, M).
+    update_with(K, fun (L) -> L ++ Vs end, M).
 
 -spec erase(K :: any(),
             M :: map()) -> map().
@@ -154,7 +154,7 @@ map(F, M) ->
 
 merge(F, M1, M2) ->
     maps:fold(fun (K, V1, M) ->
-                  maps:update_with(K, fun (V2) -> F(K, V1, V2) end, V1, M)
+                  update_with(K, fun(V2) -> F(K, V1, V2) end, V1, M)
               end, M2, M1).
 
 -spec new() -> map().
@@ -184,7 +184,7 @@ to_list(M) ->
              M :: map()) -> map().
 
 update(K, F, M) ->
-    maps:update_with(K, F, M).
+    update_with(K, F, M).
 
 -spec update(K :: any(),
              F :: fun((any()) -> any()),
@@ -192,14 +192,14 @@ update(K, F, M) ->
              M :: map()) -> map().
 
 update(K, F, V, M) ->
-    maps:update_with(K, F, V, M).
+    update_with(K, F, V, M).
 
 -spec update_counter(K :: any(),
                      I :: number(),
                      M :: map()) -> map().
 
 update_counter(K, I, M) ->
-    maps:update_with(K, fun (J) -> J + I end, I, M).
+    update_with(K, fun (J) -> J + I end, I, M).
 
 %%%------------------------------------------------------------------------
 %%% maps API external interface functions

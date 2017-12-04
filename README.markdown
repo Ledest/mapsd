@@ -1,6 +1,7 @@
 Erlang Maps Dict API
 --------------------
 
+[![Build Status](https://secure.travis-ci.org/Ledest/mapsd.png)](http://travis-ci.org/Ledest/maps)
 [![hex.pm version](https://img.shields.io/hexpm/v/mapsd.svg)](https://hex.pm/packages/mapsd)
 
 Provide all the dict module interface functions for an Erlang map data

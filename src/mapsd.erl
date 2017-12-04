@@ -81,14 +81,14 @@
              M :: map()) -> map().
 
 append(K, V, M) ->
-    update_with(K, fun (L) -> L ++ [V] end, M).
+    update_with(K, fun(L) -> L ++ [V] end, [V], M).
 
 -spec append_list(K :: any(),
                   Vs :: list(),
                   M :: map()) -> map().
 
 append_list(K, Vs, M) ->
-    update_with(K, fun (L) -> L ++ Vs end, M).
+    update_with(K, fun(L) -> L ++ Vs end, Vs, M).
 
 -spec erase(K :: any(),
             M :: map()) -> map().

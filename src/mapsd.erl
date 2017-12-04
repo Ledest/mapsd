@@ -134,7 +134,7 @@ from_list(L) ->
 -spec is_empty(M :: map()) -> boolean().
 
 is_empty(M) ->
-    M == #{}.
+    maps:size(M) =:= 0.
 
 -spec is_key(K :: any(),
              M :: map()) -> boolean().
@@ -245,23 +245,46 @@ remove(K, M) ->
 -spec take(K :: any(),
            M :: map()) -> any().
 
+take(K, M) when is_map(M) ->
+    case maps:find(K, M) of
+        {ok, V} -> {V, maps:remove(K, M)};
+        error -> error
+    end;
 take(K, M) ->
-    maps:take(K, M).
+    error({badmap, M}, [K, M]).
 
 -spec update_with(K :: any(),
                   F :: fun((any()) -> any()),
                   M :: map()) -> map().
 
+update_with(K, F, M) when is_function(F, 1), is_map(M) ->
+    case maps:find(K, M) of
+        {ok, V} -> maps:update(K, F(V), M);
+        error -> error({badkey, K}, [K, F, M])
+    end;
 update_with(K, F, M) ->
-    maps:update_with(K, F, M).
+     error(if
+               is_map(M) -> badarg;
+               true -> {badmap, M}
+           end,
+           [K, F, M]).
 
 -spec update_with(K :: any(),
                   F :: fun((any()) -> any()),
                   V :: any(),
                   M :: map()) -> map().
 
+update_with(K, F, V, M) when is_function(F, 1), is_map(M) ->
+    case maps:find(K, M) of
+        {ok, Val} -> maps:update(K, F(Val), M);
+        error -> maps:put(K, V, M)
+    end;
 update_with(K, F, V, M) ->
-    maps:update_with(K, F, V, M).
+     error(if
+               is_map(M) -> badarg;
+               true -> {badmap, M}
+           end,
+           [K, F, V, M]).
 
 -spec values(M :: map()) -> list().
 
